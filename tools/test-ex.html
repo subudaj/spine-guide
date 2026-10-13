@@ -1,0 +1,14 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="../src/css/style.css"><style>body{background:#fff;margin:0}.row{display:flex;gap:4px;align-items:center;margin:2px}.cell{position:relative;width:330px;height:206px;border:1px solid #ddd}.cell svg{width:330px;height:206px;background:#f6f9fd}.cell .cap{font-size:9px;padding:2px 4px;min-height:0}.row b{width:80px;font-size:12px}</style><body>
+<script src="../src/js/util.js"></script><script src="../src/js/spine.js"></script><script src="../src/js/data.js"></script><script src="../src/js/anatomy-side.js"></script><script src="../src/js/rig.js"></script><script src="../src/js/exercises.js"></script><script src="../src/js/exui.js"></script>
+<div id="d"></div><script>
+document.body.insertAdjacentHTML('afterbegin', SVG_DEFS);
+const only=(location.hash.slice(1)||'').split(',').filter(Boolean);
+const d=document.getElementById('d');
+for(const ex of EX.L){ if(only.length&&!only.includes(ex.id))continue;
+ const row=document.createElement('div');row.className='row';row.innerHTML=`<b>${ex.id}</b>`;d.appendChild(row);
+ const times=[];let acc=0;for(const fr of ex.frames){acc+=fr.d;times.push(acc-0.001);acc+=fr.hold;}
+ const pick=[times[0],times[1],times[Math.min(2,times.length-1)],'ghost'];
+ for(const t of pick){const c=document.createElement('div');c.className='cell';c.innerHTML='<svg></svg><div class="cap"></div>';row.appendChild(c);
+   const p=new EXUI.Player(ex,c);p.playing=false; if(t==='ghost'){p.ghost=true;p.draw(times[1]);} else p.draw(t);}
+}
+</script>

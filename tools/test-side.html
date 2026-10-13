@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><style>
+body{margin:0;background:#fff}svg{width:900px;height:1100px}
+.vb{fill:url(#pBone);stroke:#9c8a6a;stroke-width:.08}.vp{fill:#efe3c8;stroke:#9c8a6a;stroke-width:.08}.facet{fill:#e7dbc0;stroke:#b4a383;stroke-width:.05;opacity:.6}
+.ep{stroke:#8fb3c9;stroke-width:.12}.dsc{fill:#d3e4ee;stroke:#6f97ad;stroke-width:.07}.bone{fill:#efe3c8;stroke:#9c8a6a;stroke-width:.08}.faint{opacity:.5}
+.hole{fill:#cdbb98;opacity:.7}.canal{fill:none;stroke:#9c8a6a;stroke-width:.06}.rib{fill:none;stroke:#d9c49b;stroke-width:.9;stroke-linecap:round;opacity:.85}.cart{fill:none;stroke:#bcd3df;stroke-width:.8;opacity:.6}
+.clav{fill:none;stroke:#e3d4b2;stroke-width:1;opacity:.7}.skin path{fill:#f2cbb2;stroke:#b9846a;stroke-width:.1}.mus{fill:url(#gMuscle);stroke:#7a2620;stroke-width:.06;opacity:.85}.fib{fill:none;stroke:#8c2c26;stroke-width:.05;opacity:.6}
+.lateral{opacity:.5}.tendon{fill:#f5f2ea;opacity:.8}.multif{stroke:#7a2620;stroke-width:.35;opacity:.8}.diaph{fill:none;stroke:#b9473f;stroke-width:.5}.diaphT{fill:none;stroke:#f5f2ea;stroke-width:.5}
+.lig{fill:none;stroke:#a9bccd;stroke-width:.25}.inter{fill:#e6edf2;opacity:.6;stroke:none}.flav{stroke:#efcd55;stroke-width:.35;fill:none}.nuchal{fill:#e6edf2;stroke:#a9bccd;stroke-width:.06;opacity:.8}
+.dura{fill:#dce9f5;stroke:#9cb8d3;stroke-width:.06;opacity:.8}.cord{fill:none;stroke:#c4923c;stroke-width:1.05;stroke-linecap:round}.cordIn{fill:none;stroke:#f6dca6;stroke-width:.85;stroke-linecap:round}
+.cauda{fill:none;stroke:#e0b04a;stroke-width:.1}.root{fill:none;stroke:#e5b31f;stroke-width:.3}.drg{fill:#f3c537}.sciatic{fill:none;stroke:#e5b31f;stroke-width:.7;opacity:.8}.plexus{fill:none;stroke:#e5b31f;stroke-width:.35;opacity:.6}
+.brain{fill:#eec3bd;stroke:#c99089;stroke-width:.08}.tline{stroke:#f5f2ea;stroke-width:.25}.corset{opacity:.5}.trap{opacity:.8}.lbl path{stroke:#456;stroke-width:.08;fill:none}.lbl circle{fill:#456}.lbl text{fill:#123;font-family:sans-serif}
+.floor{stroke:#999;stroke-width:.3}.prop{fill:#ccd;stroke:#889;stroke-width:.2}.bed{fill:#dfe6ef}.pillow{fill:#eef2f8;stroke:#99a;stroke-width:.2}
+.limbbone{opacity:.55}.far{opacity:.3}
+</style><body><div id="d"></div>
+<script src="../src/js/util.js"></script><script src="../src/js/spine.js"></script><script src="../src/js/data.js"></script><script src="../src/js/anatomy-side.js"></script>
+<script>
+document.body.insertAdjacentHTML('afterbegin', SVG_DEFS);
+const poses={stand:{y:91.5},slump:{y:54.5,pel:14,lum:-26,tho:-10,cer:-6,nod:12,pro:2.5,hp:76,kn:88,sh:35,el:70},bed:{y:20,x:0,pel:90,lum:-6,tho:-12,tf:3,tfa:-12,cer:-26,nod:-10,hp:0,kn:5,sh:35,el:110,pillows:2}};
+const which=location.hash.slice(1)||'stand';
+const sk=SPINE.build(poses[which]);
+const b=SIDE.bbox(sk);const box=[b[0]-30,b[1]-4,b[2]+60,b[3]+8];
+const svg=`<svg viewBox="${box.join(' ')}">${SIDE.render(sk,{layers:{skin:1,deep:1,bones:1,nerves:1,ligs:1,superficial:1,labels:1},props:which==='bed'?'bed':which==='slump'?'sit':'stand',zone:1,box,stage:{'L4-L5':3},sel:new Set(['T7'])})}</svg>`;
+document.getElementById('d').innerHTML=svg;
+</script>

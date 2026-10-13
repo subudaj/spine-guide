@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="../src/css/style.css"><style>body{background:#fff}.row{display:flex;gap:4px}.row svg{width:300px;height:330px;border:1px solid #ddd}</style><body>
+<script src="../src/js/util.js"></script><script src="../src/js/spine.js"></script><script src="../src/js/anatomy-side.js"></script><script src="../src/js/hernia.js"></script>
+<div id="d"></div><script>
+document.body.insertAdjacentHTML('afterbegin', SVG_DEFS);
+let h='';
+for (const [r,dir] of [['L','paracentral'],['T','central'],['C','foraminal']]){h+='<div class="row">';for(const s of [0,1,2,3,4]){const a=HERNIA.axial(r,s,dir);h+=`<svg viewBox="${a.view.join(' ')}">${a.svg}</svg>`;}h+='</div>';}
+h+='<div class="row">';for(const s of [0,2,3,4]){const a=HERNIA.sagittal('L',s,'paracentral');h+=`<svg viewBox="${a.view.join(' ')}">${a.svg}</svg>`;}
+const a=HERNIA.sagittal('C',3,'central');h+=`<svg viewBox="${a.view.join(' ')}">${a.svg}</svg>`;h+='</div>';
+document.getElementById('d').innerHTML=h;
+</script>

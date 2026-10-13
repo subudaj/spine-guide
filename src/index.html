@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Спина: карта, грыжи и упражнения</title>
+<meta name="description" content="Интерактивная карта позвоночника: кости, диски, связки, мышцы и нервы. Как выглядит грыжа диска. Упражнения с анимацией и личный комплекс.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='12' y='2' width='8' height='5' rx='2' fill='%231d6fe0'/%3E%3Crect x='12' y='9' width='8' height='5' rx='2' fill='%231d6fe0'/%3E%3Crect x='12' y='16' width='8' height='5' rx='2' fill='%23ff7a1a'/%3E%3Crect x='12' y='23' width='8' height='6' rx='2' fill='%231d6fe0'/%3E%3C/svg%3E">
+<!--CSS-->
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <h1>Спина: карта, грыжи и упражнения</h1>
+    <p>Посмотрите, как устроен позвоночник изнутри, что происходит при грыже диска и какие упражнения помогают именно вашей зоне. Внизу — личный комплекс по вашим ответам.</p>
+  </div>
+</header>
+<nav class="nav"><div class="wrap">
+  <a href="#map">Карта</a><a href="#why">Почему болит под лопатками</a><a href="#hernia">Грыжа</a><a href="#exercises">Упражнения</a><a href="#program">Мой комплекс</a><a href="#redflags">Когда к врачу</a><a href="#sources">Источники</a>
+</div></nav>
+
+<main class="wrap">
+  <div class="disclaimer">⚕️ Это образовательный материал, а не диагноз и не назначение лечения. Упражнения основаны на клинических рекомендациях (NICE, Минздрав РФ) и исследованиях — ссылки в конце. Если есть «<a href="#redflags">красные флаги</a>», сильная или нарастающая боль, или боль не уменьшается за 4–6 недель — покажитесь врачу (невролог, ортопед, врач ЛФК).</div>
+
+  <!-- ============ КАРТА ============ -->
+  <section id="map">
+    <h2>1. Карта позвоночника</h2>
+    <p class="lead">Коснитесь позвонка или диска, чтобы выбрать его (можно несколько соседних). Коснитесь мышцы, связки или нерва — появится объяснение. Кнопки поз показывают, как меняется позвоночник, когда вы сидите или лежите.</p>
+    <div class="grid2">
+      <div>
+        <div class="toolbar">
+          <div class="seg" id="views"><button class="on" data-v="side">Сбоку (разрез)</button><button data-v="back">Сзади (мышцы)</button></div>
+          <button class="btn small" data-act="mine">Моя зона: под лопатками</button>
+        </div>
+        <div class="toolbar"><div class="seg" id="postures">
+          <button data-p="stand">Стоя</button><button data-p="sit">Сидя ровно</button><button data-p="slump">Ссутулившись</button><button data-p="pillows">На 2 подушках</button><button data-p="lie">На 1 подушке</button>
+        </div></div>
+        <div class="toolbar" id="layers">
+          <button class="chip" data-l="skin">Кожа</button><button class="chip" data-l="superficial">Поверхностные мышцы</button><button class="chip" data-l="deep">Глубокие мышцы</button>
+          <button class="chip" data-l="bones">Кости</button><button class="chip" data-l="ligs">Связки</button><button class="chip" data-l="nerves">Нервы</button><button class="chip" data-l="labels">Подписи</button><button class="chip" data-l="zone">Зона усталости</button>
+        </div>
+        <div class="figbox" id="anat">
+          <svg viewBox="0 0 100 120" role="img" aria-label="Анатомическая схема позвоночника"></svg>
+          <div class="zoomer"><button id="zin" title="Приблизить">+</button><button id="zout" title="Отдалить">−</button><button id="zspine" title="К выбранному позвонку">🎯</button><button id="zreset" title="Сбросить">⟲</button></div>
+          <div class="tip" id="tip"></div>
+        </div>
+        <div class="legend">
+          <span><i class="sw" style="background:#efe3c8"></i>кость</span><span><i class="sw" style="background:#d3e4ee"></i>диск</span><span><i class="sw" style="background:#9fcbe9"></i>ядро диска</span>
+          <span><i class="sw" style="background:#f6dca6"></i>спинной мозг</span><span><i class="sw" style="background:#f3c537"></i>нервы</span><span><i class="sw" style="background:#bb4a42"></i>мышцы</span>
+          <span><i class="sw" style="background:#f5f2ea"></i>сухожилия, фасции</span><span><i class="sw" style="background:#e6edf2;border-color:#9fb4c7"></i>связки</span><span><i class="sw" style="background:#efcd55"></i>жёлтая связка</span>
+        </div>
+        <p class="hint">Приближение: кнопки «+ −» справа (на компьютере — Ctrl + колесо). Когда рисунок приближен, его можно двигать пальцем или мышью.</p>
+      </div>
+      <div>
+        <div class="card info" id="info"></div>
+        <div class="card" style="margin-top:12px">
+          <div id="postureTxt"></div>
+        </div>
+        <div class="card" style="margin-top:12px">
+          <b>Выбрано:</b> <button class="chip" data-act="clear" style="float:right">очистить</button>
+          <div class="selbar" id="selList"></div>
+          <details><summary class="hint">Выбрать уровень списком</summary><div class="selbar" id="levels"></div></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ПОЧЕМУ ============ -->
+  <section id="why">
+    <h2>2. Почему устаёт спина чуть ниже лопаток</h2>
+    <div class="grid2">
+      <div class="card">
+        <p>Участок <b>T6–T9</b> — вершина грудного изгиба позвоночника. К каждому позвонку здесь крепятся рёбра (позвоночно-рёберные суставы), сверху лежат мышцы-разгибатели спины, а от остистых отростков T4–T12 начинается <b>нижняя часть трапециевидной мышцы</b>, которая держит лопатки внизу.</p>
+        <p><b>Что происходит, когда долго сидите или лежите с головой на двух подушках.</b> Голова весит около 5 кг. Когда она впереди или приподнята подушками, шея и верх груди сгибаются, а самый большой «перегиб» приходится на средний грудной отдел. Мышцы спины и связки сзади весь этот час натянуты и работают <b>без перерыва</b>. В постоянном статическом напряжении мышцы хуже снабжаются кровью, в них накапливаются продукты обмена — так и появляется тупая, ноющая, «уставшая» боль в одном-двух позвонках.</p>
+        <p><b>Хорошая новость:</b> это не повреждение и почти никогда не грыжа (грыжи в грудном отделе — лишь 0,25–1% всех грыж). Такая боль хорошо отвечает на три вещи:</p>
+        <ol>
+          <li><b>Менять позу</b> каждые 30–45 минут — «лучшая поза — следующая поза».</li>
+          <li><b>Возвращать подвижность</b> грудному отделу: разгибание и повороты.</li>
+          <li><b>Укреплять «держатели»</b>: нижнюю и среднюю трапецию, ромбовидные, глубокие мышцы шеи. Укрепление при сутулости работает лучше, чем только растяжка.</li>
+        </ol>
+        <div class="kw"><span>лучшая поза — следующая</span><span>двигаться чаще, а не «ровнее»</span><span>укреплять, а не только тянуть</span><span>нижняя трапеция</span><span>грудной отдел создан для поворотов</span></div>
+        <div class="selbar" style="margin-top:10px"><button class="btn small" data-post="slump">Показать: ссутулившись</button><button class="btn small" data-post="pillows">Показать: на 2 подушках</button><button class="btn small ghost" data-post="lie">Как лучше лежать</button></div>
+      </div>
+      <div class="card">
+        <h3>Сколько «весит» голова при наклоне</h3>
+        <div id="bars"></div>
+        <p class="hint">Модельный расчёт нагрузки на шейный отдел (Hansraj, 2014). Это не измерение у живых людей, а иллюстрация рычага: чем дальше голова впереди, тем сильнее работают мышцы шеи и спины, чтобы её удержать.</p>
+        <div class="note">Важно: исследования не находят одной «правильной» осанки. Боль чаще связана с <b>длительной неподвижностью</b> и слабостью мышц, чем с конкретной позой. Поэтому цель — не держать спину «по струнке» весь день, а чаще её менять и тренировать.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ГРЫЖА ============ -->
+  <section id="hernia">
+    <h2>3. Как выглядит грыжа диска</h2>
+    <p class="lead">Выберите уровень и двигайте ползунок от здорового диска до отрыва фрагмента. Слева — вид сверху на срез диска, справа — разрез сбоку двух позвонков. Корешок краснеет, когда его сдавливает грыжа и раздражает воспаление.</p>
+    <div class="card">
+      <div class="toolbar">
+        <label>Уровень: <select id="hLevel" style="font:inherit;padding:4px 6px;border-radius:8px;border:1px solid var(--line)"></select></label>
+        <div class="seg" id="hDir"><button data-d="central">Центральная</button><button class="on" data-d="paracentral">Заднебоковая</button><button data-d="foraminal">Боковая (фораминальная)</button></div>
+        <button class="btn small" id="hPlay">▶ проиграть</button>
+        <label class="chip"><input type="checkbox" id="hMap" checked> показать на карте</label>
+      </div>
+      <div class="stage-row"><span class="hint">Норма</span><input type="range" id="hStage" min="0" max="4" step="0.01" value="0"><span class="hint">Секвестр</span></div>
+      <div class="stage-ticks" id="hTicks"><span data-s="0">Норма</span><span data-s="1">Дегенерация</span><span data-s="2">Протрузия</span><span data-s="3">Экструзия</span><span data-s="4">Секвестр</span></div>
+      <div class="hgrid">
+        <div class="hbox"><h4>Вид сверху (поперечный срез)</h4><svg id="hAx" role="img" aria-label="Поперечный срез диска"></svg></div>
+        <div class="hbox"><h4>Вид сбоку (два позвонка и диск)</h4><svg id="hSg" role="img" aria-label="Боковой разрез"></svg></div>
+      </div>
+      <div class="legend">
+        <span><i class="sw" style="background:#9fcbe9"></i>пульпозное ядро</span><span><i class="sw" style="background:#d3e4ee"></i>фиброзное кольцо</span><span><i class="sw" style="background:#f2f5f8;border-color:#9fb4c7"></i>задняя продольная связка</span>
+        <span><i class="sw" style="background:#f3c537"></i>корешок</span><span><i class="sw" style="background:#ff4b2b"></i>сдавленный корешок</span><span><i class="sw" style="background:#ff8a6b;opacity:.6"></i>воспаление</span><span><i class="sw" style="background:#8e5fd1"></i>иммунные клетки</span>
+        <span><i class="sw" style="background:#dfeefa"></i>дуральный мешок</span><span><i class="sw" style="background:#efcd55"></i>жёлтая связка</span><span><i class="sw" style="background:#c4554d"></i>мышцы</span>
+      </div>
+      <div class="grid2" style="margin-top:8px">
+        <div id="hText"></div>
+        <div>
+          <h3>Чем закончится грыжа?</h3>
+          <div class="stat"><div><b>~41%</b>протрузий уменьшаются сами</div><div><b>~70%</b>экструзий уменьшаются</div><div><b>~96%</b>секвестров уменьшаются, 43% исчезают</div></div>
+          <p class="hint">Систематический обзор Chiu и др., 2015. Большие выпавшие фрагменты иммунная система «разбирает» активнее, чем небольшие выпячивания.</p>
+          <div class="note">Боль от грыжи — это не только давление, но и <b>воспаление</b> вокруг корешка. Поэтому размер грыжи на МРТ плохо предсказывает боль, а у многих людей без боли на МРТ находят протрузии и дегенерацию дисков.</div>
+          <div class="note green">Что делать: оставаться активным, избегать того, что «гонит» боль в ногу или руку, и делать упражнения, после которых боль «собирается» к центру. Это и есть ваш комплекс ниже.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ УПРАЖНЕНИЯ ============ -->
+  <section id="exercises">
+    <h2>4. Упражнения</h2>
+    <p class="lead">Каждое упражнение показано анимацией: <b style="color:var(--work)">красным</b> — мышцы, которые должны работать, <b style="color:var(--stretch)">синим</b> — что растягивается, <b style="color:var(--relax)">зелёным пунктиром</b> — что должно оставаться расслабленным. Кнопка «показать ошибку» накладывает полупрозрачную красную фигуру с типичной ошибкой.</p>
+    <div class="filters" id="exFilter">
+      <button class="chip on">Все</button><button class="chip" data-r="T">Грудной отдел</button><button class="chip" data-r="C">Шея</button><button class="chip" data-r="L">Поясница</button>
+      <button class="chip" data-g="relax">Снять напряжение</button><button class="chip" data-g="mob">Подвижность</button><button class="chip" data-g="str">Укрепление</button>
+    </div>
+    <div class="exgrid" id="exList"></div>
+  </section>
+
+  <!-- ============ ПРОГРАММА ============ -->
+  <section id="program">
+    <h2>5. Мой комплекс</h2>
+    <p class="lead">Ответьте на вопросы — комплекс соберётся сразу. Ответы сохраняются в этом браузере. Нажмите на упражнение в плане, чтобы посмотреть технику.</p>
+    <div id="pform-root" class="noprint"></div>
+    <div class="selbar noprint" style="margin-top:12px"><button class="btn" id="print">🖨 Распечатать / сохранить в PDF</button></div>
+    <div class="plan" id="plan"></div>
+  </section>
+
+  <!-- ============ КРАСНЫЕ ФЛАГИ ============ -->
+  <section id="redflags">
+    <h2>6. Когда нужен врач</h2>
+    <div class="card">
+      <ul class="redflags" id="redList"></ul>
+      <p>Также обратитесь к врачу, если боль не уменьшается за 4–6 недель, мешает спать, или появилась впервые после 50 лет без понятной причины.</p>
+    </div>
+  </section>
+
+  <!-- ============ ИСТОЧНИКИ ============ -->
+  <section id="sources">
+    <h2>7. На чём основано</h2>
+    <div class="card">
+      <p>Подход к упражнениям — из клинических рекомендаций: при боли в спине <b>первая линия — сохранять активность и выполнять упражнения</b> (любые: укрепляющие, растягивающие, аэробные, йога), подобранные под человека. Постельный режим не рекомендуется. Массаж и мануальная терапия — только вместе с упражнениями.</p>
+      <p>Честно о доказательствах: для поясницы база сильная (сотни исследований). Для боли в грудном отделе исследований меньше — упражнения взяты из работ по осанке, шее и лопаткам у офисных работников; эффекты там умеренные, но безопасные.</p>
+      <ol class="sources" id="srcList"></ol>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap">Сделано как личный образовательный инструмент. Не заменяет очную консультацию врача.</div></footer>
+<!--JS-->
+</body>
+</html>
