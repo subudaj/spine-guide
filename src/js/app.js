@@ -114,8 +114,9 @@ const APP = (() => {
   function hit(e) { return e.target.closest('[data-v],[data-d],[data-m]'); }
 
   function toggleSel(id) {
-    if (st.sel.has(id)) { st.sel.delete(id); if (st.last === id) st.last = [...st.sel].pop() || null; }
-    else { st.sel.add(id); st.last = id; }
+    const nm = id === 'S1' ? 'крестец' : (id.includes('-') ? 'диск ' : 'позвонок ') + id.replace('-', '–');
+    if (st.sel.has(id)) { st.sel.delete(id); if (st.last === id) st.last = [...st.sel].pop() || null; toast(`Выбор снят: ${nm}`); }
+    else { st.sel.add(id); st.last = id; toast(`Выбран ${nm}`, narrow() ? ['Описание ↓', toInfo] : null); }
     if (id.includes('-') && st.sel.has(id)) setHernia(id, true);
     afterSel();
   }
@@ -125,6 +126,7 @@ const APP = (() => {
   }
   function renderChips() {
     const ids = [...st.sel];
+    $$('#levels [data-x2]').forEach(b => b.classList.toggle('on', st.sel.has(b.dataset.x2)));
     $('#selList').innerHTML = ids.length ? ids.map(id => `<button class="chip on" data-x="${id}">${id.replace('-', '–')} ✕</button>`).join('') : '<span class="hint">Ничего не выбрано — коснитесь позвонка или диска на рисунке.</span>';
   }
   function renderInfo(muscle) {
@@ -181,23 +183,27 @@ const APP = (() => {
       const el = hit(e); if (!el) return;
       if (el.dataset.v) toggleSel(el.dataset.v);
       else if (el.dataset.d) toggleSel(el.dataset.d);
-      else if (el.dataset.m && DATA.MUSCLES[el.dataset.m]) { renderInfo(el.dataset.m); flash(el); if (innerWidth < 900) $('#info').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+      else if (el.dataset.m && DATA.MUSCLES[el.dataset.m]) { renderInfo(el.dataset.m); flash(el); toast(DATA.MUSCLES[el.dataset.m].n, narrow() ? ['Описание ↓', toInfo] : null); }
     });
     fig.addEventListener('wheel', e => { if (!e.ctrlKey && !e.metaKey) return; e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.25 : 0.8, e); }, { passive: false });
-    $('#zin').onclick = () => zoomAt(1.4); $('#zout').onclick = () => zoomAt(1 / 1.4); $('#zreset').onclick = () => { st.zoom = 1; st.center = null; drawAnat(); };
+    $('#zin').onclick = () => zoomAt(1.4); $('#zout').onclick = () => zoomAt(1 / 1.4); $('#zreset').onclick = () => { st.zoom = 1; st.center = null; drawAnat(); toast('Весь рисунок'); };
     $('#zspine').onclick = () => { // приблизить к выбранному позвонку
       const id = st.last && !st.last.includes('-') ? st.last : (st.last ? st.last.split('-')[0] : 'T7');
       const el = anat().querySelector(`[data-v="${id}"]`) || anat().querySelector(`[data-d="${st.last}"]`);
-      if (el) { const b = el.getBBox(); st.center = [b.x + b.width / 2, b.y + b.height / 2]; st.zoom = 3.2; drawAnat(); }
+      if (!st.last) { toast('Сначала выберите позвонок или диск на рисунке'); return; }
+      if (el) { const b = el.getBBox(); st.center = [b.x + b.width / 2, b.y + b.height / 2]; st.zoom = 3.2; drawAnat(); toast('Крупно: ' + st.last.replace('-', '–') + '. Рисунок можно двигать, ⟲ — вернуть'); }
     };
-    $('#views').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.view = b.dataset.v; st.zoom = 1; st.center = null; $$('#views button').forEach(x => x.classList.toggle('on', x === b)); $('#postures').style.display = st.view === 'side' ? '' : 'none'; $('#postureTxt').style.display = st.view === 'side' ? '' : 'none'; drawAnat(); });
-    $('#postures').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.zoom = 1; st.center = null; setPosture(b.dataset.p); });
+    $('#views').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; setView(b.dataset.v); drawAnat(); toast(st.view === 'side' ? 'Вид сбоку: разрез по середине тела' : 'Вид сзади: слева поверхностные мышцы, справа глубокие'); });
+    $('#postures').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.zoom = 1; st.center = null; setPosture(b.dataset.p); if (b.dataset.p !== 'stand') toast('Поза: ' + POST[b.dataset.p].t + '. Пояснение — под рисунком' + (narrow() ? ' ↓' : ' справа')); });
     $('#layers').addEventListener('click', e => {
       const b = e.target.closest('button'); if (!b) return;
       const k = b.dataset.l;
       if (k === 'zone') st.zone = !st.zone; else st.layers[k] = st.layers[k] ? 0 : 1;
-      b.classList.toggle('on', k === 'zone' ? st.zone : !!st.layers[k]);
+      const on = k === 'zone' ? st.zone : !!st.layers[k];
+      b.classList.toggle('on', on);
       drawAnat();
+      if (k === 'labels' && on && !labelsOn()) toast('В позах лёжа подписи не помещаются — касайтесь деталей рисунка или выберите позу «Стоя»');
+      else toast((on ? 'Показано: ' : 'Скрыто: ') + b.textContent.trim().toLowerCase());
     });
     $$('#layers button').forEach(b => b.classList.toggle('on', b.dataset.l === 'zone' ? st.zone : !!st.layers[b.dataset.l]));
     // строка выбора уровней
@@ -207,12 +213,13 @@ const APP = (() => {
       const x2 = e.target.closest('[data-x2]'); if (x2) { toggleSel(x2.dataset.x2); return; }
       const pk = e.target.closest('[data-pick]'); if (pk) { if (!st.sel.has(pk.dataset.pick)) toggleSel(pk.dataset.pick); else { st.last = pk.dataset.pick; renderInfo(); } return; }
       const go = e.target.closest('[data-go]'); if (go) { EXUI.focus(go.dataset.go); return; }
+      const pb = e.target.closest('[data-post]');
+      if (pb) { setView('side'); setPosture(pb.dataset.post); drawAnat(); $('#map').scrollIntoView({ behavior: 'smooth' }); toast('Поза: ' + POST[pb.dataset.post].t); return; }
       const a = e.target.closest('[data-act]'); if (!a || a.closest('.ex')) return;
       if (a.dataset.act === 'hernia') { setHernia(st.last); $('#hernia').scrollIntoView({ behavior: 'smooth' }); }
       if (a.dataset.act === 'prog') { window._prog.setZones(st.sel); $('#program').scrollIntoView({ behavior: 'smooth' }); }
-      if (a.dataset.act === 'clear') { st.sel.clear(); st.last = null; afterSel(); }
-      if (a.dataset.act === 'mine') { st.sel = new Set(['T7', 'T8', 'T7-T8']); st.last = 'T8'; st.view = 'side'; $$('#views button').forEach(x => x.classList.toggle('on', x.dataset.v === 'side')); $('#postures').style.display = ''; setPosture('pillows'); afterSel(); $('#map').scrollIntoView({ behavior: 'smooth' }); }
-      if (a.dataset.post) { st.view = 'side'; $$('#views button').forEach(x => x.classList.toggle('on', x.dataset.v === 'side')); $('#postures').style.display = ''; $('#postureTxt').style.display = ''; setPosture(a.dataset.post); $('#map').scrollIntoView({ behavior: 'smooth' }); }
+      if (a.dataset.act === 'clear') { st.sel.clear(); st.last = null; afterSel(); toast('Выбор очищен'); }
+      if (a.dataset.act === 'mine') { st.sel = new Set(['T7', 'T8', 'T7-T8']); st.last = 'T8'; setView('side'); setPosture('pillows'); afterSel(); $('#anat').scrollIntoView({ behavior: 'smooth', block: 'center' }); toast('Выбраны T7, T8 и диск между ними. Поза — на 2 подушках: оранжевым подсвечена зона перегрузки'); }
     });
   }
   function zoomAt(k, e) {
@@ -225,6 +232,21 @@ const APP = (() => {
     }
     st.zoom = z; if (z <= 1.001) st.center = null;
     drawAnat();
+  }
+  let toastT = null;
+  function toast(msg, action) { // action: [текст кнопки, функция]
+    const t = $('#toast'); if (!t) return;
+    t.innerHTML = `<span>${msg}</span>` + (action ? `<button class="btn small">${action[0]}</button>` : '');
+    if (action) t.querySelector('button').onclick = () => { action[1](); t.classList.remove('show'); };
+    t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), action ? 4500 : 2600);
+  }
+  const narrow = () => innerWidth < 900;
+  const toInfo = () => $('#info').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function setView(v) {
+    st.view = v; st.zoom = 1; st.center = null;
+    $$('#views button').forEach(x => x.classList.toggle('on', x.dataset.v === v));
+    $('#postBar').style.display = v === 'side' ? '' : 'none';
+    $('#postureTxt').parentElement.style.display = v === 'side' ? '' : 'none';
   }
   function flash(el) { el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 2800); }
 
@@ -268,7 +290,10 @@ const APP = (() => {
       const step = now => { st.stage = Math.min(4, (now - t0) / 2500); drawHernia(); if (st.stage < 4) hAnim = requestAnimationFrame(step); else { hAnim = null; $('#hPlay').textContent = '▶ проиграть'; } };
       hAnim = requestAnimationFrame(step);
     };
-    $('#hMap').onchange = e => { st.showOnMap = e.target.checked; drawAnat(); };
+    $('#hMap').onchange = e => {
+      st.showOnMap = e.target.checked; drawAnat();
+      toast(st.showOnMap ? `Диск ${st.hDisc.replace('-', '–')} с этой стадией показан на карте (вид сбоку)` : 'Грыжа на карте скрыта', st.showOnMap ? ['К карте ↑', () => { setView('side'); drawAnat(); $('#anat').scrollIntoView({ behavior: 'smooth', block: 'center' }); }] : null);
+    };
     drawHernia();
   }
   function animateStage(to) {
@@ -286,13 +311,17 @@ const APP = (() => {
     data.forEach(([a, kg], i) => {
       const x = 40 + i * 95, h = kg * 5.2, y = H - 40 - h;
       s += `<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="6" fill="${i === 0 ? '#9cc3f0' : i < 3 ? '#ffb36b' : '#ff7a4d'}"/>`;
-      s += `<text x="${x + bw / 2}" y="${y - 7}" text-anchor="middle" font-size="16" font-weight="700" fill="#18202b">${kg} кг</text>`;
-      s += `<text x="${x + bw / 2}" y="${H - 18}" text-anchor="middle" font-size="14" fill="#4a5566">${a}°</text>`;
+      s += `<text x="${x + bw / 2}" y="${y - 7}" text-anchor="middle" font-size="16" font-weight="700" fill="#18202b" class="bv">${kg} кг</text>`;
+      s += `<text x="${x + bw / 2}" y="${H - 18}" text-anchor="middle" font-size="14" fill="#4a5566" class="bl">${a}°</text>`;
     });
-    s += `<text x="${W / 2}" y="${H - 1}" text-anchor="middle" font-size="12" fill="#4a5566">наклон головы вперёд</text></svg>`;
+    s += `<text x="${W / 2}" y="${H - 1}" text-anchor="middle" font-size="12" fill="#4a5566" class="bl">наклон головы вперёд</text></svg>`;
     return s;
   }
 
+  function exCount() {
+    const all = $$('#exList .ex'), vis = all.filter(e => e.style.display !== 'none');
+    $('#exCount').textContent = `Показано упражнений: ${vis.length} из ${all.length}`;
+  }
   function init() {
     document.body.insertAdjacentHTML('afterbegin', SVG_DEFS);
     $('#bars').innerHTML = bars();
@@ -307,7 +336,13 @@ const APP = (() => {
       const b = e.target.closest('button'); if (!b) return;
       $$('#exFilter button').forEach(x => x.classList.toggle('on', x === b));
       EXUI.filter($('#exList'), b.dataset.r || '', b.dataset.g || '');
+      exCount();
     });
+    exCount();
+    const tb = $('#themeBtn');
+    const paint = () => { const d = document.documentElement.dataset.theme === 'dark'; tb.textContent = d ? '☀️' : '🌙'; tb.title = d ? 'Светлая тема' : 'Тёмная тема'; };
+    tb.onclick = () => { const d = document.documentElement.dataset.theme === 'dark'; document.documentElement.dataset.theme = d ? 'light' : 'dark'; try { localStorage.setItem('spine-theme', d ? 'light' : 'dark'); } catch (e) { } paint(); toast(d ? 'Светлая тема' : 'Тёмная тема'); };
+    paint();
     window._prog = PROG.mount($('#pform-root'), $('#plan'));
     window._prog.setZones(st.sel);
     $('#print').onclick = () => window.print();

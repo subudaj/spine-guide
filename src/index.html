@@ -6,6 +6,7 @@
 <title>Спина: карта, грыжи и упражнения</title>
 <meta name="description" content="Интерактивная карта позвоночника: кости, диски, связки, мышцы и нервы. Как выглядит грыжа диска. Упражнения с анимацией и личный комплекс.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='12' y='2' width='8' height='5' rx='2' fill='%231d6fe0'/%3E%3Crect x='12' y='9' width='8' height='5' rx='2' fill='%231d6fe0'/%3E%3Crect x='12' y='16' width='8' height='5' rx='2' fill='%23ff7a1a'/%3E%3Crect x='12' y='23' width='8' height='6' rx='2' fill='%231d6fe0'/%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem('spine-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){}})();</script>
 <!--CSS-->
 </head>
 <body>
@@ -16,7 +17,7 @@
   </div>
 </header>
 <nav class="nav"><div class="wrap">
-  <a href="#map">Карта</a><a href="#why">Почему болит под лопатками</a><a href="#hernia">Грыжа</a><a href="#exercises">Упражнения</a><a href="#program">Мой комплекс</a><a href="#redflags">Когда к врачу</a><a href="#sources">Источники</a>
+  <a href="#map">Карта</a><a href="#why">Почему болит под лопатками</a><a href="#hernia">Грыжа</a><a href="#exercises">Упражнения</a><a href="#program">Мой комплекс</a><a href="#redflags">Когда к врачу</a><a href="#sources">Источники</a><button id="themeBtn" class="themeBtn" title="Светлая / тёмная тема" aria-label="Переключить тему">🌙</button>
 </div></nav>
 
 <main class="wrap">
@@ -29,15 +30,15 @@
     <div class="grid2">
       <div>
         <div class="toolbar">
-          <div class="seg" id="views"><button class="on" data-v="side">Сбоку (разрез)</button><button data-v="back">Сзади (мышцы)</button></div>
+          <span class="glabel">Вид:</span><div class="seg" id="views"><button class="on" data-v="side">Сбоку (разрез)</button><button data-v="back">Сзади (мышцы)</button></div>
           <button class="btn small" data-act="mine">Моя зона: под лопатками</button>
         </div>
-        <div class="toolbar"><div class="seg" id="postures">
+        <div class="toolbar" id="postBar"><span class="glabel">Поза:</span><div class="seg" id="postures">
           <button data-p="stand">Стоя</button><button data-p="sit">Сидя ровно</button><button data-p="slump">Ссутулившись</button><button data-p="pillows">На 2 подушках</button><button data-p="lie">На 1 подушке</button>
         </div></div>
-        <div class="toolbar" id="layers">
-          <button class="chip" data-l="skin">Кожа</button><button class="chip" data-l="superficial">Поверхностные мышцы</button><button class="chip" data-l="deep">Глубокие мышцы</button>
-          <button class="chip" data-l="bones">Кости</button><button class="chip" data-l="ligs">Связки</button><button class="chip" data-l="nerves">Нервы</button><button class="chip" data-l="labels">Подписи</button><button class="chip" data-l="zone">Зона усталости</button>
+        <div class="toolbar" id="layers"><span class="glabel">Слои (вкл/выкл):</span>
+          <button class="chip tog" data-l="skin">Кожа</button><button class="chip tog" data-l="superficial">Поверхностные мышцы</button><button class="chip tog" data-l="deep">Глубокие мышцы</button>
+          <button class="chip tog" data-l="bones">Кости</button><button class="chip tog" data-l="ligs">Связки</button><button class="chip tog" data-l="nerves">Нервы</button><button class="chip tog" data-l="labels">Подписи</button><button class="chip tog" data-l="zone">Зона усталости</button>
         </div>
         <div class="figbox" id="anat">
           <svg viewBox="0 0 100 120" role="img" aria-label="Анатомическая схема позвоночника"></svg>
@@ -49,7 +50,7 @@
           <span><i class="sw" style="background:#f6dca6"></i>спинной мозг</span><span><i class="sw" style="background:#f3c537"></i>нервы</span><span><i class="sw" style="background:#bb4a42"></i>мышцы</span>
           <span><i class="sw" style="background:#f5f2ea"></i>сухожилия, фасции</span><span><i class="sw" style="background:#e6edf2;border-color:#9fb4c7"></i>связки</span><span><i class="sw" style="background:#efcd55"></i>жёлтая связка</span>
         </div>
-        <p class="hint">Приближение: кнопки «+ −» справа (на компьютере — Ctrl + колесо). Когда рисунок приближен, его можно двигать пальцем или мышью.</p>
+        <p class="hint">👆 <b>Касание позвонка или диска</b> — выбрать, повторное касание — снять выбор. <b>Касание мышцы</b> — её описание. Кнопки справа внизу: <b>+ / −</b> приблизить и отдалить, <b>🎯</b> показать выбранный позвонок крупно, <b>⟲</b> вернуть весь рисунок. Приближенный рисунок можно двигать пальцем.</p>
       </div>
       <div>
         <div class="card info" id="info"></div>
@@ -133,6 +134,7 @@
       <button class="chip on">Все</button><button class="chip" data-r="T">Грудной отдел</button><button class="chip" data-r="C">Шея</button><button class="chip" data-r="L">Поясница</button>
       <button class="chip" data-g="relax">Снять напряжение</button><button class="chip" data-g="mob">Подвижность</button><button class="chip" data-g="str">Укрепление</button>
     </div>
+    <p class="hint" id="exCount"></p>
     <div class="exgrid" id="exList"></div>
   </section>
 
@@ -165,6 +167,7 @@
   </section>
 </main>
 <footer><div class="wrap">Сделано как личный образовательный инструмент. Не заменяет очную консультацию врача.</div></footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 <!--JS-->
 </body>
 </html>

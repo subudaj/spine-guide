@@ -113,9 +113,9 @@ const EXUI = (() => {
       <div>${regs}</div>
       <div class="stage"><svg viewBox="0 0 160 100" role="img" aria-label="${U.esc(ex.title)}"></svg><div class="cap"></div><div class="prog" style="position:absolute;left:0;right:0;top:0;height:3px;background:#0001"><i style="display:block;height:100%;width:0;background:var(--warm)"></i></div></div>
       <div class="ctrl">
-        <button class="chip on" data-act="play">⏸ пауза</button>
-        <button class="chip" data-act="slow">🐢 медленно</button>
-        <button class="chip on" data-act="hl">🎨 мышцы</button>
+        <button class="chip on" data-act="play" title="Остановить или продолжить анимацию">⏸ пауза</button>
+        <button class="chip tog" data-act="slow" title="Анимация в 2 раза медленнее">🐢 медленно</button>
+        <button class="chip tog on" data-act="hl" title="Цветная подсветка мышц">🎨 подсветка мышц</button>
         ${ex.ghost ? '<button class="chip" data-act="ghost">✗ показать ошибку</button>' : ''}
       </div>
       <div class="legend"><span><i class="sw" style="background:${RIG.HL.work}"></i>работает</span><span><i class="sw" style="background:${RIG.HL.stretch}"></i>растягивается</span><span><i class="sw" style="background:#fff;border:1.5px dashed ${RIG.HL.relax}"></i>должно быть расслаблено</span><span><i class="sw" style="background:#ffc690"></i>здесь движение</span></div>

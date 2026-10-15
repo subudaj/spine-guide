@@ -6,6 +6,7 @@
 <title>Спина: карта, грыжи и упражнения</title>
 <meta name="description" content="Интерактивная карта позвоночника: кости, диски, связки, мышцы и нервы. Как выглядит грыжа диска. Упражнения с анимацией и личный комплекс.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='12' y='2' width='8' height='5' rx='2' fill='%231d6fe0'/%3E%3Crect x='12' y='9' width='8' height='5' rx='2' fill='%231d6fe0'/%3E%3Crect x='12' y='16' width='8' height='5' rx='2' fill='%23ff7a1a'/%3E%3Crect x='12' y='23' width='8' height='6' rx='2' fill='%231d6fe0'/%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem('spine-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){}})();</script>
 <style>
 :root{
   --bg:#f4f6fa; --card:#fff; --ink:#18202b; --ink2:#4a5566; --line:#e2e7ef; --acc:#1d6fe0; --acc2:#0f9d8a;
@@ -13,7 +14,7 @@
   --shadow:0 1px 2px rgba(20,30,50,.06),0 6px 24px rgba(20,30,50,.06);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;color-scheme:light}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
 a{color:var(--acc)}
 b,strong{font-weight:650}
@@ -116,6 +117,7 @@ section{padding:26px 0 8px}
 .trap{opacity:.85}
 .lbl path{stroke:#4b5b70;stroke-width:.08;fill:none}
 .lbl circle{fill:#4b5b70}
+.lbl path,.lbl circle{pointer-events:none}
 .lbl text{fill:#16202c;font-family:system-ui,sans-serif;paint-order:stroke;stroke:#fff;stroke-width:.35}
 .lbl[data-m]{cursor:pointer}
 .lbl[data-m]:hover text{fill:var(--acc)}
@@ -274,13 +276,79 @@ section{padding:26px 0 8px}
 footer{padding:28px 0 40px;color:var(--ink2);font-size:.9rem}
 .bars{width:100%;max-width:520px}
 .bars text{font-family:system-ui,sans-serif}
-@media print{
-  .nav,.hero,.toolbar,.zoomer,#map,#hernia,#exercises,.form,.noprint{display:none!important}
-  body{background:#fff}.card{box-shadow:none;border:1px solid #ccc}
-  #program{padding:0}
-}
 
 @media (max-width:600px){.cap{position:static;border-radius:0;margin:0}.stage{display:flex;flex-direction:column}}
+
+/* ---------- кнопки и обратная связь ---------- */
+.hit{fill:transparent;stroke:transparent;pointer-events:all;cursor:pointer}
+.hit.hv{stroke-width:.45}.hit.hd{stroke-width:.2}
+.glabel{font-size:.8rem;color:var(--ink2);font-weight:600;margin-right:2px}
+.chip.tog::before{content:'○';margin-right:2px;opacity:.7}
+.chip.tog.on::before{content:'✓';opacity:1;font-weight:700}
+.chip:active,.btn:active,.seg button:active{transform:scale(.96)}
+.themeBtn{margin-left:auto;border:1px solid var(--line);background:var(--card);border-radius:999px;width:36px;height:32px;flex:0 0 auto;font-size:16px;line-height:1}
+.toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);z-index:60;max-width:min(92vw,560px);background:#14202ef2;color:#fff;border-radius:12px;padding:10px 14px;font-size:.93rem;display:flex;gap:10px;align-items:center;box-shadow:0 8px 30px rgba(0,0,0,.3);transition:transform .25s ease,opacity .25s;pointer-events:none;opacity:0}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.toast .btn{pointer-events:auto}
+.toast .btn{white-space:nowrap}
+.dk.herniated .dsc{stroke:#ff4b2b;stroke-width:.3;animation:pulse 1.4s ease-in-out infinite}
+select{background:var(--card);color:var(--ink)}
+
+/* ---------- тёмная тема ---------- */
+@media screen{
+html[data-theme=dark]{color-scheme:dark;--bg:#0e131a;--card:#171e28;--ink:#e6ebf2;--ink2:#a3afc0;--line:#2a3442;--acc:#5b9dff;--acc2:#18a594;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 24px rgba(0,0,0,.25)}
+html[data-theme=dark] .hero{background:linear-gradient(135deg,#0a1f3d 0%,#123f86 55%,#0d6e6a 100%)}
+html[data-theme=dark] .nav{background:rgba(14,19,26,.92);border-bottom-color:var(--line)}
+html[data-theme=dark] .nav a:hover,html[data-theme=dark] .nav a.on{background:#1b2a40;color:#8fbaff;border-color:#2c4466}
+html[data-theme=dark] .disclaimer{background:#2a2213;border-color:#5c4a22}
+html[data-theme=dark] .seg{background:#212a37}
+html[data-theme=dark] .seg button.on{background:#2f3b4d;color:#9cc2ff;box-shadow:none}
+html[data-theme=dark] .chip{background:#1b232e;color:var(--ink2)}
+html[data-theme=dark] .chip.on{background:#1b2f4c;border-color:#35598c;color:#b2cfff}
+html[data-theme=dark] .btn.ghost{background:#263142;color:var(--ink)}
+html[data-theme=dark] .tag{background:#232d3a;color:var(--ink2)}
+html[data-theme=dark] .figbox{background:radial-gradient(ellipse at 50% 40%,#1d2632 0%,#121820 80%)}
+html[data-theme=dark] .zoomer button{background:#1b232ef0;color:var(--ink)}
+html[data-theme=dark] .note,html[data-theme=dark] .info .note{background:#15243a}
+html[data-theme=dark] .note.warm,html[data-theme=dark] .info .note.warm{background:#2c2015}
+html[data-theme=dark] .note.red{background:#2e1919}
+html[data-theme=dark] .note.green{background:#14281e}
+html[data-theme=dark] .lbl text{fill:#e1e8f1;stroke:#121820}
+html[data-theme=dark] .lbl path{stroke:#7f91a6}html[data-theme=dark] .lbl circle{fill:#9fb0c4}
+html[data-theme=dark] .sideTag,html[data-theme=dark] .ax-ori{fill:#9fb0c4}
+html[data-theme=dark] .floor,html[data-theme=dark] .rg-floor{stroke:#4d5866}
+html[data-theme=dark] .prop,html[data-theme=dark] .rg-prop{fill:#394456;stroke:#6b788b}
+html[data-theme=dark] .bed{fill:#273140}
+html[data-theme=dark] .pillow{fill:#3a4658;stroke:#6d7a8e}
+html[data-theme=dark] .rg-mat{fill:#21413a}
+html[data-theme=dark] .rg-txt{fill:#c9d4e2}
+html[data-theme=dark] .ax-trach .lumen{fill:#121820}
+html[data-theme=dark] .ax-lung ellipse{fill:#3a2a30;stroke:#5b3f48}
+html[data-theme=dark] .sg-foramen{fill:#252b33}
+html[data-theme=dark] .stat div{background:#1b2431}
+html[data-theme=dark] .stage{background:linear-gradient(#1a222d,#131a23);border-color:var(--line)}
+html[data-theme=dark] .kw span{background:#2c2111;border-color:#5c4316;color:#ffca80}
+html[data-theme=dark] .feel .yes{background:#13281d;border-color:#24533d}
+html[data-theme=dark] .feel .no{background:#2d1818;border-color:#5a2b2b}
+html[data-theme=dark] .dose{background:#15243a}
+html[data-theme=dark] .q{background:#151c26}
+html[data-theme=dark] .block{background:var(--card)}
+html[data-theme=dark] .item{background:#1a222d}
+html[data-theme=dark] .item:hover{background:#1c2a3e;border-color:#35598c}
+html[data-theme=dark] .item svg{background:#111821}
+html[data-theme=dark] .week>div{background:#1a222d}
+html[data-theme=dark] .light .g{background:#13281d}html[data-theme=dark] .light .y{background:#2a2411}html[data-theme=dark] .light .r{background:#2d1818}
+html[data-theme=dark] .bars .bl{fill:#a3afc0}html[data-theme=dark] .bars .bv{fill:#e6ebf2}
+html[data-theme=dark] .toast{background:#e6ebf2;color:#0e131a}
+html[data-theme=dark] .tip{background:#e6ebf2e8;color:#0e131a}
+html[data-theme=dark] .sw{border-color:rgba(255,255,255,.25)}
+}
+
+@media print{
+  .nav,.hero,.toolbar,.zoomer,#map,#hernia,#exercises,.form,.noprint{display:none!important}
+  body{background:#fff;color:#000}.card{box-shadow:none;border:1px solid #ccc}
+  #program{padding:0}
+}
 
 </style>
 </head>
@@ -292,7 +360,7 @@ footer{padding:28px 0 40px;color:var(--ink2);font-size:.9rem}
   </div>
 </header>
 <nav class="nav"><div class="wrap">
-  <a href="#map">Карта</a><a href="#why">Почему болит под лопатками</a><a href="#hernia">Грыжа</a><a href="#exercises">Упражнения</a><a href="#program">Мой комплекс</a><a href="#redflags">Когда к врачу</a><a href="#sources">Источники</a>
+  <a href="#map">Карта</a><a href="#why">Почему болит под лопатками</a><a href="#hernia">Грыжа</a><a href="#exercises">Упражнения</a><a href="#program">Мой комплекс</a><a href="#redflags">Когда к врачу</a><a href="#sources">Источники</a><button id="themeBtn" class="themeBtn" title="Светлая / тёмная тема" aria-label="Переключить тему">🌙</button>
 </div></nav>
 
 <main class="wrap">
@@ -305,15 +373,15 @@ footer{padding:28px 0 40px;color:var(--ink2);font-size:.9rem}
     <div class="grid2">
       <div>
         <div class="toolbar">
-          <div class="seg" id="views"><button class="on" data-v="side">Сбоку (разрез)</button><button data-v="back">Сзади (мышцы)</button></div>
+          <span class="glabel">Вид:</span><div class="seg" id="views"><button class="on" data-v="side">Сбоку (разрез)</button><button data-v="back">Сзади (мышцы)</button></div>
           <button class="btn small" data-act="mine">Моя зона: под лопатками</button>
         </div>
-        <div class="toolbar"><div class="seg" id="postures">
+        <div class="toolbar" id="postBar"><span class="glabel">Поза:</span><div class="seg" id="postures">
           <button data-p="stand">Стоя</button><button data-p="sit">Сидя ровно</button><button data-p="slump">Ссутулившись</button><button data-p="pillows">На 2 подушках</button><button data-p="lie">На 1 подушке</button>
         </div></div>
-        <div class="toolbar" id="layers">
-          <button class="chip" data-l="skin">Кожа</button><button class="chip" data-l="superficial">Поверхностные мышцы</button><button class="chip" data-l="deep">Глубокие мышцы</button>
-          <button class="chip" data-l="bones">Кости</button><button class="chip" data-l="ligs">Связки</button><button class="chip" data-l="nerves">Нервы</button><button class="chip" data-l="labels">Подписи</button><button class="chip" data-l="zone">Зона усталости</button>
+        <div class="toolbar" id="layers"><span class="glabel">Слои (вкл/выкл):</span>
+          <button class="chip tog" data-l="skin">Кожа</button><button class="chip tog" data-l="superficial">Поверхностные мышцы</button><button class="chip tog" data-l="deep">Глубокие мышцы</button>
+          <button class="chip tog" data-l="bones">Кости</button><button class="chip tog" data-l="ligs">Связки</button><button class="chip tog" data-l="nerves">Нервы</button><button class="chip tog" data-l="labels">Подписи</button><button class="chip tog" data-l="zone">Зона усталости</button>
         </div>
         <div class="figbox" id="anat">
           <svg viewBox="0 0 100 120" role="img" aria-label="Анатомическая схема позвоночника"></svg>
@@ -325,7 +393,7 @@ footer{padding:28px 0 40px;color:var(--ink2);font-size:.9rem}
           <span><i class="sw" style="background:#f6dca6"></i>спинной мозг</span><span><i class="sw" style="background:#f3c537"></i>нервы</span><span><i class="sw" style="background:#bb4a42"></i>мышцы</span>
           <span><i class="sw" style="background:#f5f2ea"></i>сухожилия, фасции</span><span><i class="sw" style="background:#e6edf2;border-color:#9fb4c7"></i>связки</span><span><i class="sw" style="background:#efcd55"></i>жёлтая связка</span>
         </div>
-        <p class="hint">Приближение: кнопки «+ −» справа (на компьютере — Ctrl + колесо). Когда рисунок приближен, его можно двигать пальцем или мышью.</p>
+        <p class="hint">👆 <b>Касание позвонка или диска</b> — выбрать, повторное касание — снять выбор. <b>Касание мышцы</b> — её описание. Кнопки справа внизу: <b>+ / −</b> приблизить и отдалить, <b>🎯</b> показать выбранный позвонок крупно, <b>⟲</b> вернуть весь рисунок. Приближенный рисунок можно двигать пальцем.</p>
       </div>
       <div>
         <div class="card info" id="info"></div>
@@ -409,6 +477,7 @@ footer{padding:28px 0 40px;color:var(--ink2);font-size:.9rem}
       <button class="chip on">Все</button><button class="chip" data-r="T">Грудной отдел</button><button class="chip" data-r="C">Шея</button><button class="chip" data-r="L">Поясница</button>
       <button class="chip" data-g="relax">Снять напряжение</button><button class="chip" data-g="mob">Подвижность</button><button class="chip" data-g="str">Укрепление</button>
     </div>
+    <p class="hint" id="exCount"></p>
     <div class="exgrid" id="exList"></div>
   </section>
 
@@ -441,6 +510,7 @@ footer{padding:28px 0 40px;color:var(--ink2);font-size:.9rem}
   </section>
 </main>
 <footer><div class="wrap">Сделано как личный образовательный инструмент. Не заменяет очную консультацию врача.</div></footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 <script>
 /* ---- util.js ---- */
 /* Общие помощники: векторы, пути SVG, сглаживание, анимация.
@@ -966,7 +1036,7 @@ const SIDE = (() => {
       const dp = discPath(dk, st);
       const c = U.add(dk.c, U.mul(dp.n, -0.12 * dk.d - dp.b * 0.55));
       const rx = 0.22 * dk.d * (1 - dp.shrink) + dp.b * 0.3, ry = Math.max(0.12, 0.3 * dk.h * (1 - dp.shrink * 1.5));
-      let g = `<g class="dk${sel ? ' sel' : ''}" data-d="${dk.id}"><path class="dsc" d="${dp.d}"/>`;
+      let g = `<g class="dk${sel ? ' sel' : ''}${st > 0.5 ? ' herniated' : ''}" data-d="${dk.id}"><path class="dsc" d="${dp.d}"/>`;
       g += `<ellipse cx="${U.f(c[0])}" cy="${U.f(-c[1])}" rx="${U.f(rx)}" ry="${U.f(ry)}" transform="rotate(${U.f(90 - dk.aMid)} ${U.f(c[0])} ${U.f(-c[1])})" fill="${st >= 1 ? 'url(#gNucDry)' : 'url(#gNuc)'}" class="nuc"/>`;
       if (st >= 3) { // выпавший фрагмент
         const m = U.add(U.mid(dk.up_, dk.pp), U.mul(dp.n, -(dp.b + 0.35)));
@@ -1359,6 +1429,14 @@ const SIDE = (() => {
       const k = U.clamp(0.25 + ld.thor / 25, 0.25, 1);
       s += `<ellipse class="zone" cx="${U.f(c[0])}" cy="${U.f(-c[1])}" rx="${U.f(5.5 * (0.7 + k * 0.4))}" ry="${U.f(7 * (0.7 + k * 0.4))}" transform="rotate(${U.f(90 - v.a)} ${U.f(c[0])} ${U.f(-c[1])})" fill="url(#gZone)" opacity="${U.f(k)}"/>`;
     }
+    // невидимый слой касаний: позвонки и диски всегда «сверху», даже под полупрозрачными мышцами
+    let hit = '';
+    for (const v of sk.verts) {
+      const b = bodyLocal(v), p = postLocal(v);
+      hit += `<path class="hit hv" data-v="${v.id}" d="${b ? P(b.map(q => v.F(q[0], q[1]))) : ''}${P(p.map(q => v.F(q[0], q[1])))}"/>`;
+    }
+    for (const dk of sk.discs) hit += `<path class="hit hd" data-d="${dk.id}" d="${discPath(dk, 0).d}"/>`;
+    s += `<g class="hits">${hit}</g>`;
     if (o.box && L.labels) s += `<g class="labels">${labels(sk, bx, o.box)}</g>`;
     return s;
   }
@@ -2810,9 +2888,9 @@ const EXUI = (() => {
       <div>${regs}</div>
       <div class="stage"><svg viewBox="0 0 160 100" role="img" aria-label="${U.esc(ex.title)}"></svg><div class="cap"></div><div class="prog" style="position:absolute;left:0;right:0;top:0;height:3px;background:#0001"><i style="display:block;height:100%;width:0;background:var(--warm)"></i></div></div>
       <div class="ctrl">
-        <button class="chip on" data-act="play">⏸ пауза</button>
-        <button class="chip" data-act="slow">🐢 медленно</button>
-        <button class="chip on" data-act="hl">🎨 мышцы</button>
+        <button class="chip on" data-act="play" title="Остановить или продолжить анимацию">⏸ пауза</button>
+        <button class="chip tog" data-act="slow" title="Анимация в 2 раза медленнее">🐢 медленно</button>
+        <button class="chip tog on" data-act="hl" title="Цветная подсветка мышц">🎨 подсветка мышц</button>
         ${ex.ghost ? '<button class="chip" data-act="ghost">✗ показать ошибку</button>' : ''}
       </div>
       <div class="legend"><span><i class="sw" style="background:${RIG.HL.work}"></i>работает</span><span><i class="sw" style="background:${RIG.HL.stretch}"></i>растягивается</span><span><i class="sw" style="background:#fff;border:1.5px dashed ${RIG.HL.relax}"></i>должно быть расслаблено</span><span><i class="sw" style="background:#ffc690"></i>здесь движение</span></div>
@@ -3176,8 +3254,9 @@ const APP = (() => {
   function hit(e) { return e.target.closest('[data-v],[data-d],[data-m]'); }
 
   function toggleSel(id) {
-    if (st.sel.has(id)) { st.sel.delete(id); if (st.last === id) st.last = [...st.sel].pop() || null; }
-    else { st.sel.add(id); st.last = id; }
+    const nm = id === 'S1' ? 'крестец' : (id.includes('-') ? 'диск ' : 'позвонок ') + id.replace('-', '–');
+    if (st.sel.has(id)) { st.sel.delete(id); if (st.last === id) st.last = [...st.sel].pop() || null; toast(`Выбор снят: ${nm}`); }
+    else { st.sel.add(id); st.last = id; toast(`Выбран ${nm}`, narrow() ? ['Описание ↓', toInfo] : null); }
     if (id.includes('-') && st.sel.has(id)) setHernia(id, true);
     afterSel();
   }
@@ -3187,6 +3266,7 @@ const APP = (() => {
   }
   function renderChips() {
     const ids = [...st.sel];
+    $$('#levels [data-x2]').forEach(b => b.classList.toggle('on', st.sel.has(b.dataset.x2)));
     $('#selList').innerHTML = ids.length ? ids.map(id => `<button class="chip on" data-x="${id}">${id.replace('-', '–')} ✕</button>`).join('') : '<span class="hint">Ничего не выбрано — коснитесь позвонка или диска на рисунке.</span>';
   }
   function renderInfo(muscle) {
@@ -3243,23 +3323,27 @@ const APP = (() => {
       const el = hit(e); if (!el) return;
       if (el.dataset.v) toggleSel(el.dataset.v);
       else if (el.dataset.d) toggleSel(el.dataset.d);
-      else if (el.dataset.m && DATA.MUSCLES[el.dataset.m]) { renderInfo(el.dataset.m); flash(el); if (innerWidth < 900) $('#info').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+      else if (el.dataset.m && DATA.MUSCLES[el.dataset.m]) { renderInfo(el.dataset.m); flash(el); toast(DATA.MUSCLES[el.dataset.m].n, narrow() ? ['Описание ↓', toInfo] : null); }
     });
     fig.addEventListener('wheel', e => { if (!e.ctrlKey && !e.metaKey) return; e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.25 : 0.8, e); }, { passive: false });
-    $('#zin').onclick = () => zoomAt(1.4); $('#zout').onclick = () => zoomAt(1 / 1.4); $('#zreset').onclick = () => { st.zoom = 1; st.center = null; drawAnat(); };
+    $('#zin').onclick = () => zoomAt(1.4); $('#zout').onclick = () => zoomAt(1 / 1.4); $('#zreset').onclick = () => { st.zoom = 1; st.center = null; drawAnat(); toast('Весь рисунок'); };
     $('#zspine').onclick = () => { // приблизить к выбранному позвонку
       const id = st.last && !st.last.includes('-') ? st.last : (st.last ? st.last.split('-')[0] : 'T7');
       const el = anat().querySelector(`[data-v="${id}"]`) || anat().querySelector(`[data-d="${st.last}"]`);
-      if (el) { const b = el.getBBox(); st.center = [b.x + b.width / 2, b.y + b.height / 2]; st.zoom = 3.2; drawAnat(); }
+      if (!st.last) { toast('Сначала выберите позвонок или диск на рисунке'); return; }
+      if (el) { const b = el.getBBox(); st.center = [b.x + b.width / 2, b.y + b.height / 2]; st.zoom = 3.2; drawAnat(); toast('Крупно: ' + st.last.replace('-', '–') + '. Рисунок можно двигать, ⟲ — вернуть'); }
     };
-    $('#views').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.view = b.dataset.v; st.zoom = 1; st.center = null; $$('#views button').forEach(x => x.classList.toggle('on', x === b)); $('#postures').style.display = st.view === 'side' ? '' : 'none'; $('#postureTxt').style.display = st.view === 'side' ? '' : 'none'; drawAnat(); });
-    $('#postures').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.zoom = 1; st.center = null; setPosture(b.dataset.p); });
+    $('#views').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; setView(b.dataset.v); drawAnat(); toast(st.view === 'side' ? 'Вид сбоку: разрез по середине тела' : 'Вид сзади: слева поверхностные мышцы, справа глубокие'); });
+    $('#postures').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.zoom = 1; st.center = null; setPosture(b.dataset.p); if (b.dataset.p !== 'stand') toast('Поза: ' + POST[b.dataset.p].t + '. Пояснение — под рисунком' + (narrow() ? ' ↓' : ' справа')); });
     $('#layers').addEventListener('click', e => {
       const b = e.target.closest('button'); if (!b) return;
       const k = b.dataset.l;
       if (k === 'zone') st.zone = !st.zone; else st.layers[k] = st.layers[k] ? 0 : 1;
-      b.classList.toggle('on', k === 'zone' ? st.zone : !!st.layers[k]);
+      const on = k === 'zone' ? st.zone : !!st.layers[k];
+      b.classList.toggle('on', on);
       drawAnat();
+      if (k === 'labels' && on && !labelsOn()) toast('В позах лёжа подписи не помещаются — касайтесь деталей рисунка или выберите позу «Стоя»');
+      else toast((on ? 'Показано: ' : 'Скрыто: ') + b.textContent.trim().toLowerCase());
     });
     $$('#layers button').forEach(b => b.classList.toggle('on', b.dataset.l === 'zone' ? st.zone : !!st.layers[b.dataset.l]));
     // строка выбора уровней
@@ -3269,12 +3353,13 @@ const APP = (() => {
       const x2 = e.target.closest('[data-x2]'); if (x2) { toggleSel(x2.dataset.x2); return; }
       const pk = e.target.closest('[data-pick]'); if (pk) { if (!st.sel.has(pk.dataset.pick)) toggleSel(pk.dataset.pick); else { st.last = pk.dataset.pick; renderInfo(); } return; }
       const go = e.target.closest('[data-go]'); if (go) { EXUI.focus(go.dataset.go); return; }
+      const pb = e.target.closest('[data-post]');
+      if (pb) { setView('side'); setPosture(pb.dataset.post); drawAnat(); $('#map').scrollIntoView({ behavior: 'smooth' }); toast('Поза: ' + POST[pb.dataset.post].t); return; }
       const a = e.target.closest('[data-act]'); if (!a || a.closest('.ex')) return;
       if (a.dataset.act === 'hernia') { setHernia(st.last); $('#hernia').scrollIntoView({ behavior: 'smooth' }); }
       if (a.dataset.act === 'prog') { window._prog.setZones(st.sel); $('#program').scrollIntoView({ behavior: 'smooth' }); }
-      if (a.dataset.act === 'clear') { st.sel.clear(); st.last = null; afterSel(); }
-      if (a.dataset.act === 'mine') { st.sel = new Set(['T7', 'T8', 'T7-T8']); st.last = 'T8'; st.view = 'side'; $$('#views button').forEach(x => x.classList.toggle('on', x.dataset.v === 'side')); $('#postures').style.display = ''; setPosture('pillows'); afterSel(); $('#map').scrollIntoView({ behavior: 'smooth' }); }
-      if (a.dataset.post) { st.view = 'side'; $$('#views button').forEach(x => x.classList.toggle('on', x.dataset.v === 'side')); $('#postures').style.display = ''; $('#postureTxt').style.display = ''; setPosture(a.dataset.post); $('#map').scrollIntoView({ behavior: 'smooth' }); }
+      if (a.dataset.act === 'clear') { st.sel.clear(); st.last = null; afterSel(); toast('Выбор очищен'); }
+      if (a.dataset.act === 'mine') { st.sel = new Set(['T7', 'T8', 'T7-T8']); st.last = 'T8'; setView('side'); setPosture('pillows'); afterSel(); $('#anat').scrollIntoView({ behavior: 'smooth', block: 'center' }); toast('Выбраны T7, T8 и диск между ними. Поза — на 2 подушках: оранжевым подсвечена зона перегрузки'); }
     });
   }
   function zoomAt(k, e) {
@@ -3287,6 +3372,21 @@ const APP = (() => {
     }
     st.zoom = z; if (z <= 1.001) st.center = null;
     drawAnat();
+  }
+  let toastT = null;
+  function toast(msg, action) { // action: [текст кнопки, функция]
+    const t = $('#toast'); if (!t) return;
+    t.innerHTML = `<span>${msg}</span>` + (action ? `<button class="btn small">${action[0]}</button>` : '');
+    if (action) t.querySelector('button').onclick = () => { action[1](); t.classList.remove('show'); };
+    t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), action ? 4500 : 2600);
+  }
+  const narrow = () => innerWidth < 900;
+  const toInfo = () => $('#info').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function setView(v) {
+    st.view = v; st.zoom = 1; st.center = null;
+    $$('#views button').forEach(x => x.classList.toggle('on', x.dataset.v === v));
+    $('#postBar').style.display = v === 'side' ? '' : 'none';
+    $('#postureTxt').parentElement.style.display = v === 'side' ? '' : 'none';
   }
   function flash(el) { el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 2800); }
 
@@ -3330,7 +3430,10 @@ const APP = (() => {
       const step = now => { st.stage = Math.min(4, (now - t0) / 2500); drawHernia(); if (st.stage < 4) hAnim = requestAnimationFrame(step); else { hAnim = null; $('#hPlay').textContent = '▶ проиграть'; } };
       hAnim = requestAnimationFrame(step);
     };
-    $('#hMap').onchange = e => { st.showOnMap = e.target.checked; drawAnat(); };
+    $('#hMap').onchange = e => {
+      st.showOnMap = e.target.checked; drawAnat();
+      toast(st.showOnMap ? `Диск ${st.hDisc.replace('-', '–')} с этой стадией показан на карте (вид сбоку)` : 'Грыжа на карте скрыта', st.showOnMap ? ['К карте ↑', () => { setView('side'); drawAnat(); $('#anat').scrollIntoView({ behavior: 'smooth', block: 'center' }); }] : null);
+    };
     drawHernia();
   }
   function animateStage(to) {
@@ -3348,13 +3451,17 @@ const APP = (() => {
     data.forEach(([a, kg], i) => {
       const x = 40 + i * 95, h = kg * 5.2, y = H - 40 - h;
       s += `<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="6" fill="${i === 0 ? '#9cc3f0' : i < 3 ? '#ffb36b' : '#ff7a4d'}"/>`;
-      s += `<text x="${x + bw / 2}" y="${y - 7}" text-anchor="middle" font-size="16" font-weight="700" fill="#18202b">${kg} кг</text>`;
-      s += `<text x="${x + bw / 2}" y="${H - 18}" text-anchor="middle" font-size="14" fill="#4a5566">${a}°</text>`;
+      s += `<text x="${x + bw / 2}" y="${y - 7}" text-anchor="middle" font-size="16" font-weight="700" fill="#18202b" class="bv">${kg} кг</text>`;
+      s += `<text x="${x + bw / 2}" y="${H - 18}" text-anchor="middle" font-size="14" fill="#4a5566" class="bl">${a}°</text>`;
     });
-    s += `<text x="${W / 2}" y="${H - 1}" text-anchor="middle" font-size="12" fill="#4a5566">наклон головы вперёд</text></svg>`;
+    s += `<text x="${W / 2}" y="${H - 1}" text-anchor="middle" font-size="12" fill="#4a5566" class="bl">наклон головы вперёд</text></svg>`;
     return s;
   }
 
+  function exCount() {
+    const all = $$('#exList .ex'), vis = all.filter(e => e.style.display !== 'none');
+    $('#exCount').textContent = `Показано упражнений: ${vis.length} из ${all.length}`;
+  }
   function init() {
     document.body.insertAdjacentHTML('afterbegin', SVG_DEFS);
     $('#bars').innerHTML = bars();
@@ -3369,7 +3476,13 @@ const APP = (() => {
       const b = e.target.closest('button'); if (!b) return;
       $$('#exFilter button').forEach(x => x.classList.toggle('on', x === b));
       EXUI.filter($('#exList'), b.dataset.r || '', b.dataset.g || '');
+      exCount();
     });
+    exCount();
+    const tb = $('#themeBtn');
+    const paint = () => { const d = document.documentElement.dataset.theme === 'dark'; tb.textContent = d ? '☀️' : '🌙'; tb.title = d ? 'Светлая тема' : 'Тёмная тема'; };
+    tb.onclick = () => { const d = document.documentElement.dataset.theme === 'dark'; document.documentElement.dataset.theme = d ? 'light' : 'dark'; try { localStorage.setItem('spine-theme', d ? 'light' : 'dark'); } catch (e) { } paint(); toast(d ? 'Светлая тема' : 'Тёмная тема'); };
+    paint();
     window._prog = PROG.mount($('#pform-root'), $('#plan'));
     window._prog.setZones(st.sel);
     $('#print').onclick = () => window.print();

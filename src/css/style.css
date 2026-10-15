@@ -4,7 +4,7 @@
   --shadow:0 1px 2px rgba(20,30,50,.06),0 6px 24px rgba(20,30,50,.06);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;color-scheme:light}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
 a{color:var(--acc)}
 b,strong{font-weight:650}
@@ -107,6 +107,7 @@ section{padding:26px 0 8px}
 .trap{opacity:.85}
 .lbl path{stroke:#4b5b70;stroke-width:.08;fill:none}
 .lbl circle{fill:#4b5b70}
+.lbl path,.lbl circle{pointer-events:none}
 .lbl text{fill:#16202c;font-family:system-ui,sans-serif;paint-order:stroke;stroke:#fff;stroke-width:.35}
 .lbl[data-m]{cursor:pointer}
 .lbl[data-m]:hover text{fill:var(--acc)}
@@ -265,10 +266,76 @@ section{padding:26px 0 8px}
 footer{padding:28px 0 40px;color:var(--ink2);font-size:.9rem}
 .bars{width:100%;max-width:520px}
 .bars text{font-family:system-ui,sans-serif}
-@media print{
-  .nav,.hero,.toolbar,.zoomer,#map,#hernia,#exercises,.form,.noprint{display:none!important}
-  body{background:#fff}.card{box-shadow:none;border:1px solid #ccc}
-  #program{padding:0}
-}
 
 @media (max-width:600px){.cap{position:static;border-radius:0;margin:0}.stage{display:flex;flex-direction:column}}
+
+/* ---------- кнопки и обратная связь ---------- */
+.hit{fill:transparent;stroke:transparent;pointer-events:all;cursor:pointer}
+.hit.hv{stroke-width:.45}.hit.hd{stroke-width:.2}
+.glabel{font-size:.8rem;color:var(--ink2);font-weight:600;margin-right:2px}
+.chip.tog::before{content:'○';margin-right:2px;opacity:.7}
+.chip.tog.on::before{content:'✓';opacity:1;font-weight:700}
+.chip:active,.btn:active,.seg button:active{transform:scale(.96)}
+.themeBtn{margin-left:auto;border:1px solid var(--line);background:var(--card);border-radius:999px;width:36px;height:32px;flex:0 0 auto;font-size:16px;line-height:1}
+.toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);z-index:60;max-width:min(92vw,560px);background:#14202ef2;color:#fff;border-radius:12px;padding:10px 14px;font-size:.93rem;display:flex;gap:10px;align-items:center;box-shadow:0 8px 30px rgba(0,0,0,.3);transition:transform .25s ease,opacity .25s;pointer-events:none;opacity:0}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.toast .btn{pointer-events:auto}
+.toast .btn{white-space:nowrap}
+.dk.herniated .dsc{stroke:#ff4b2b;stroke-width:.3;animation:pulse 1.4s ease-in-out infinite}
+select{background:var(--card);color:var(--ink)}
+
+/* ---------- тёмная тема ---------- */
+@media screen{
+html[data-theme=dark]{color-scheme:dark;--bg:#0e131a;--card:#171e28;--ink:#e6ebf2;--ink2:#a3afc0;--line:#2a3442;--acc:#5b9dff;--acc2:#18a594;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 24px rgba(0,0,0,.25)}
+html[data-theme=dark] .hero{background:linear-gradient(135deg,#0a1f3d 0%,#123f86 55%,#0d6e6a 100%)}
+html[data-theme=dark] .nav{background:rgba(14,19,26,.92);border-bottom-color:var(--line)}
+html[data-theme=dark] .nav a:hover,html[data-theme=dark] .nav a.on{background:#1b2a40;color:#8fbaff;border-color:#2c4466}
+html[data-theme=dark] .disclaimer{background:#2a2213;border-color:#5c4a22}
+html[data-theme=dark] .seg{background:#212a37}
+html[data-theme=dark] .seg button.on{background:#2f3b4d;color:#9cc2ff;box-shadow:none}
+html[data-theme=dark] .chip{background:#1b232e;color:var(--ink2)}
+html[data-theme=dark] .chip.on{background:#1b2f4c;border-color:#35598c;color:#b2cfff}
+html[data-theme=dark] .btn.ghost{background:#263142;color:var(--ink)}
+html[data-theme=dark] .tag{background:#232d3a;color:var(--ink2)}
+html[data-theme=dark] .figbox{background:radial-gradient(ellipse at 50% 40%,#1d2632 0%,#121820 80%)}
+html[data-theme=dark] .zoomer button{background:#1b232ef0;color:var(--ink)}
+html[data-theme=dark] .note,html[data-theme=dark] .info .note{background:#15243a}
+html[data-theme=dark] .note.warm,html[data-theme=dark] .info .note.warm{background:#2c2015}
+html[data-theme=dark] .note.red{background:#2e1919}
+html[data-theme=dark] .note.green{background:#14281e}
+html[data-theme=dark] .lbl text{fill:#e1e8f1;stroke:#121820}
+html[data-theme=dark] .lbl path{stroke:#7f91a6}html[data-theme=dark] .lbl circle{fill:#9fb0c4}
+html[data-theme=dark] .sideTag,html[data-theme=dark] .ax-ori{fill:#9fb0c4}
+html[data-theme=dark] .floor,html[data-theme=dark] .rg-floor{stroke:#4d5866}
+html[data-theme=dark] .prop,html[data-theme=dark] .rg-prop{fill:#394456;stroke:#6b788b}
+html[data-theme=dark] .bed{fill:#273140}
+html[data-theme=dark] .pillow{fill:#3a4658;stroke:#6d7a8e}
+html[data-theme=dark] .rg-mat{fill:#21413a}
+html[data-theme=dark] .rg-txt{fill:#c9d4e2}
+html[data-theme=dark] .ax-trach .lumen{fill:#121820}
+html[data-theme=dark] .ax-lung ellipse{fill:#3a2a30;stroke:#5b3f48}
+html[data-theme=dark] .sg-foramen{fill:#252b33}
+html[data-theme=dark] .stat div{background:#1b2431}
+html[data-theme=dark] .stage{background:linear-gradient(#1a222d,#131a23);border-color:var(--line)}
+html[data-theme=dark] .kw span{background:#2c2111;border-color:#5c4316;color:#ffca80}
+html[data-theme=dark] .feel .yes{background:#13281d;border-color:#24533d}
+html[data-theme=dark] .feel .no{background:#2d1818;border-color:#5a2b2b}
+html[data-theme=dark] .dose{background:#15243a}
+html[data-theme=dark] .q{background:#151c26}
+html[data-theme=dark] .block{background:var(--card)}
+html[data-theme=dark] .item{background:#1a222d}
+html[data-theme=dark] .item:hover{background:#1c2a3e;border-color:#35598c}
+html[data-theme=dark] .item svg{background:#111821}
+html[data-theme=dark] .week>div{background:#1a222d}
+html[data-theme=dark] .light .g{background:#13281d}html[data-theme=dark] .light .y{background:#2a2411}html[data-theme=dark] .light .r{background:#2d1818}
+html[data-theme=dark] .bars .bl{fill:#a3afc0}html[data-theme=dark] .bars .bv{fill:#e6ebf2}
+html[data-theme=dark] .toast{background:#e6ebf2;color:#0e131a}
+html[data-theme=dark] .tip{background:#e6ebf2e8;color:#0e131a}
+html[data-theme=dark] .sw{border-color:rgba(255,255,255,.25)}
+}
+
+@media print{
+  .nav,.hero,.toolbar,.zoomer,#map,#hernia,#exercises,.form,.noprint{display:none!important}
+  body{background:#fff;color:#000}.card{box-shadow:none;border:1px solid #ccc}
+  #program{padding:0}
+}

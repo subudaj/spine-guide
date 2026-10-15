@@ -142,7 +142,7 @@ const SIDE = (() => {
       const dp = discPath(dk, st);
       const c = U.add(dk.c, U.mul(dp.n, -0.12 * dk.d - dp.b * 0.55));
       const rx = 0.22 * dk.d * (1 - dp.shrink) + dp.b * 0.3, ry = Math.max(0.12, 0.3 * dk.h * (1 - dp.shrink * 1.5));
-      let g = `<g class="dk${sel ? ' sel' : ''}" data-d="${dk.id}"><path class="dsc" d="${dp.d}"/>`;
+      let g = `<g class="dk${sel ? ' sel' : ''}${st > 0.5 ? ' herniated' : ''}" data-d="${dk.id}"><path class="dsc" d="${dp.d}"/>`;
       g += `<ellipse cx="${U.f(c[0])}" cy="${U.f(-c[1])}" rx="${U.f(rx)}" ry="${U.f(ry)}" transform="rotate(${U.f(90 - dk.aMid)} ${U.f(c[0])} ${U.f(-c[1])})" fill="${st >= 1 ? 'url(#gNucDry)' : 'url(#gNuc)'}" class="nuc"/>`;
       if (st >= 3) { // выпавший фрагмент
         const m = U.add(U.mid(dk.up_, dk.pp), U.mul(dp.n, -(dp.b + 0.35)));
@@ -535,6 +535,14 @@ const SIDE = (() => {
       const k = U.clamp(0.25 + ld.thor / 25, 0.25, 1);
       s += `<ellipse class="zone" cx="${U.f(c[0])}" cy="${U.f(-c[1])}" rx="${U.f(5.5 * (0.7 + k * 0.4))}" ry="${U.f(7 * (0.7 + k * 0.4))}" transform="rotate(${U.f(90 - v.a)} ${U.f(c[0])} ${U.f(-c[1])})" fill="url(#gZone)" opacity="${U.f(k)}"/>`;
     }
+    // невидимый слой касаний: позвонки и диски всегда «сверху», даже под полупрозрачными мышцами
+    let hit = '';
+    for (const v of sk.verts) {
+      const b = bodyLocal(v), p = postLocal(v);
+      hit += `<path class="hit hv" data-v="${v.id}" d="${b ? P(b.map(q => v.F(q[0], q[1]))) : ''}${P(p.map(q => v.F(q[0], q[1])))}"/>`;
+    }
+    for (const dk of sk.discs) hit += `<path class="hit hd" data-d="${dk.id}" d="${discPath(dk, 0).d}"/>`;
+    s += `<g class="hits">${hit}</g>`;
     if (o.box && L.labels) s += `<g class="labels">${labels(sk, bx, o.box)}</g>`;
     return s;
   }
