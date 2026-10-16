@@ -125,6 +125,7 @@ const EXUI = (() => {
       <details open><summary>Как делать — по шагам</summary><ol>${ex.steps.map(x => `<li>${x}</li>`).join('')}</ol></details>
       <details><summary>Частые ошибки</summary><ul>${ex.mistakes.map(x => `<li>${x}</li>`).join('')}</ul></details>
       <div class="dose"><b>Сколько:</b><br>• обострение: ${dose.acute}<br>• основной период: ${dose.main}<br>• профилактика: ${dose.prev}</div>
+      ${ex.yt ? `<div class="ytl">▶ Видео: ${ex.yt.map(q => `<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(q)}" target="_blank" rel="noopener">«${q}»</a>`).join(' · ')}</div>` : ''}
       <details><summary>Почему это работает (наука)</summary><p>${ex.why}</p><p class="ev">Источники: ${src}</p></details>
     </article>`;
   }

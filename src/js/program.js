@@ -1,7 +1,7 @@
 /* Конструктор личного комплекса. */
 'use strict';
 const PROG = (() => {
-  const MIN = { chin: 2.5, thext: 2, catcamel: 1.5, openbook: 3, ytw: 5, row: 4, angel: 2, breath: 2, micro: 1, mckenzie: 3, curlup: 3, sideplank: 3, birddog: 4, bridge: 3, hinge: 2, nerve: 2, walk: 20 };
+  const MIN = { standext: 1, hipflex: 2.5, neckstretch: 2, deadbug: 3, chin: 2.5, thext: 2, catcamel: 1.5, openbook: 3, ytw: 5, row: 4, angel: 2, breath: 2, micro: 1, mckenzie: 3, curlup: 3, sideplank: 3, birddog: 4, bridge: 3, hinge: 2, nerve: 2, walk: 20 };
   const KEY = 'spine-guide-form-v1';
   const DEF = { zC: false, zT: true, zL: false, diag: 'tension', rad: 'none', phase: 'prev', pain: 3, worse: 'unclear', sit: 'mid', time: '20', flags: [] };
 
@@ -78,11 +78,12 @@ const PROG = (() => {
     add(plan.day, 'micro', `каждые ${every} минут`);
     if (useC || useT) add(plan.day, 'chin', 'сидя: 5 × 5 с');
     if (useT) add(plan.day, 'thext', '5 повторов через спинку');
-    if (useL && extPref) add(plan.day, 'mckenzie', 'после долгого сидения (стоя — прогиб с руками на пояснице)');
+    if (useL && !flexPref) add(plan.day, 'standext', 'после каждого долгого сидения');
+    if (useC) add(plan.day, 'neckstretch', 'при напряжении в шее');
     // основное занятие
     const pool = [];
     if (useT || useC) { pool.push('chin', 'ytw', 'row', 'angel'); if (!plan.day.some(x => x.id === 'thext')) pool.push('thext'); }
-    if (useL) { pool.push('curlup', 'birddog', 'sideplank', 'bridge', 'hinge'); }
+    if (useL) { pool.push('curlup', 'birddog', 'sideplank', 'deadbug', 'bridge', 'hinge'); }
     if (o.rad === 'leg') pool.splice(useL ? 3 : 0, 0, 'nerve');
     if (o.rad === 'arm' && !pool.includes('chin')) pool.unshift('chin');
     let budget = +o.time;
@@ -102,6 +103,8 @@ const PROG = (() => {
     plan.mainMin = Math.round(used);
     // вечер
     if (useT) add(plan.evening, 'openbook');
+    if (useC) add(plan.evening, 'neckstretch');
+    if (useL && !acute) add(plan.evening, 'hipflex', 'для комфорта');
     add(plan.evening, 'breath');
     if (useL && extPref && !acute) add(plan.evening, 'mckenzie', 'если помогает');
     plan.walk = 'walk';

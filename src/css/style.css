@@ -334,6 +334,16 @@ html[data-theme=dark] .tip{background:#e6ebf2e8;color:#0e131a}
 html[data-theme=dark] .sw{border-color:rgba(255,255,255,.25)}
 }
 
+.ytl{font-size:.88rem;color:var(--ink2)}.ytl a{white-space:nowrap}
+.zgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:16px;margin-top:16px}
+.zone-card{display:flex;flex-direction:column;gap:6px}
+.zone-card h4{margin:.6em 0 .2em}
+.zhead{display:flex;gap:10px;align-items:center}
+.znum{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--warm);color:#fff;font-weight:700;display:grid;place-items:center;font-size:1.1rem}
+.zone-card .items{grid-template-columns:1fr}
+.zyt{font-size:.8rem;text-decoration:none}
+.zday{border:2px solid #ffd59c}
+html[data-theme=dark] .zday{border-color:#5c4316}
 @media print{
   .nav,.hero,.toolbar,.zoomer,#map,#hernia,#exercises,.form,.noprint{display:none!important}
   body{background:#fff;color:#000}.card{box-shadow:none;border:1px solid #ccc}

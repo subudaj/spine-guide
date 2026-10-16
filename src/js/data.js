@@ -23,6 +23,9 @@ const DATA = (() => {
     hansraj: { t: 'Hansraj K.K. Assessment of stresses in the cervical spine caused by posture and position of the head. Surg Technol Int, 2014 (модельный расчёт)', u: pm('Hansraj assessment of stresses in the cervical spine posture position of the head') },
     thoracic: { t: 'Обзор по грыжам грудного отдела: 0,25–1% всех грыж дисков, чаще ниже T8 (PMC6657757)', u: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6657757' },
     basson: { t: 'Basson A. и др. The effectiveness of neural mobilization for neuromusculoskeletal conditions: systematic review and meta-analysis. JOSPT, 2017', u: pm('Basson effectiveness of neural mobilization neuromusculoskeletal systematic review') },
+    kwon: { t: 'Kwon Y. и др. The effect of sitting posture on the loads at cervico-thoracic and lumbosacral joints. Technol Health Care, 2018', u: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6004963' },
+    wilke: { t: 'Wilke H.J. и др. New in vivo measurements of pressures in the intervertebral disc in daily life. Spine, 1999 (датчик в диске L4–L5, один доброволец)', u: 'https://www.fonar.com/pdf/spine_vol_24.No.8.pdf' },
+    caneiro: { t: 'Caneiro J.P. и др. The influence of different sitting postures on head/neck posture and muscle activity. Man Ther, 2010', u: 'https://ro.ecu.edu.au/ecuworks/6327' },
     silbernagel: { t: 'Silbernagel K.G. и др. Continued sports activity, using a pain-monitoring model, during rehabilitation. Am J Sports Med, 2007 (модель «допустимой боли»)', u: pm('Silbernagel pain-monitoring model rehabilitation') },
   };
 
@@ -153,5 +156,19 @@ const DATA = (() => {
     { id: 'trauma', t: 'Боль после падения или удара, особенно при остеопорозе или приёме гормонов', a: 'Нужен осмотр и снимок — исключить перелом.' },
   ];
 
-  return { SOURCES, REGION, ROOT, STAGES, MUSCLES, RED_FLAGS, vertInfo, discInfo };
+  /* три зоны перегрузки при сидении (счёт позвонков вверх от диска L5–S1) */
+  const ZONES = [
+    { id: 'ct', t: 'Основание шеи', lv: 'C7–T1 — над линией плеч, где шея переходит в спину', sel: ['C7', 'T1', 'C7-T1'], post: 'slump',
+      why: 'Когда голова уходит вперёд к экрану, шейно-грудной переход становится точкой рычага: нагрузка на него и активность мышц шеи сзади растут вместе с наклоном головы (Kwon 2018; Caneiro 2010). <b>Перегружены</b> верхняя трапеция, мышца, поднимающая лопатку, ременные и полуостистые мышцы, выйная связка. <b>Ослаблены</b> глубокие сгибатели шеи, средняя и нижняя трапеция, ромбовидные — те, кто должен держать голову и лопатки без усилия.',
+      muscles: ['trapU', 'levator', 'splen', 'nuchal', 'dnf', 'rhomb'], relief: ['neckstretch', 'chin', 'breath', 'micro'], strength: ['chin', 'ytw', 'row', 'angel'] },
+    { id: 'tl', t: 'Переход поясницы в грудной отдел', lv: 'T12–L1 — 5–6-й позвонок над L5–S1', sel: ['T12', 'L1', 'T12-L1'], post: 'slump',
+      why: 'Здесь жёсткая грудная клетка с рёбрами переходит в подвижную поясницу — это «шарнир», в котором спина складывается при сутулом сидении. Сюда крепятся квадратная мышца поясницы (к 12-му ребру), ножки диафрагмы, начало поясничной мышцы, нижние волокна трапеции и широчайшая через пояснично-грудную фасцию. <b>Перегружены</b> разгибатели спины и квадратная мышца, работающие в статике. <b>Не хватает</b> подвижности грудному отделу (сгибается всё в одном месте) и выносливости «корсета».',
+      muscles: ['erector', 'ql', 'diaph', 'lats', 'trapL', 'psoas'], relief: ['openbook', 'catcamel', 'breath', 'thext'], strength: ['sideplank', 'birddog', 'deadbug', 'ytw'] },
+    { id: 'lumbar', t: 'Середина поясницы', lv: 'L2–L3 — 3–4-й позвонок над L5–S1', sel: ['L2', 'L3', 'L2-L3'], post: 'slump',
+      why: 'Сидя с наклоном вперёд поясница теряет естественный прогиб. Давление внутри поясничного диска при максимальном наклоне сидя почти вдвое выше, чем при расслабленном сидении (0,83 против 0,46 МПа; Wilke 1999). Задние связки и фиброзное кольцо долго растянуты и «ползут», разгибатели и многораздельные работают без смены режима, поясничная мышца находится в укороченном положении, ягодичные почти «выключены».',
+      muscles: ['erector', 'multif', 'psoas', 'ql', 'gmax', 'tlf'], relief: ['standext', 'walk', 'catcamel', 'hipflex'], strength: ['curlup', 'birddog', 'sideplank', 'deadbug', 'bridge', 'hinge'] },
+  ];
+  const DAILY = ['micro', 'standext', 'chin', 'catcamel', 'birddog', 'ytw', 'walk'];
+
+  return { ZONES, DAILY, SOURCES, REGION, ROOT, STAGES, MUSCLES, RED_FLAGS, vertInfo, discInfo };
 })();

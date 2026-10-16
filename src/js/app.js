@@ -212,6 +212,7 @@ const APP = (() => {
       const x = e.target.closest('[data-x]'); if (x) { toggleSel(x.dataset.x); return; }
       const x2 = e.target.closest('[data-x2]'); if (x2) { toggleSel(x2.dataset.x2); return; }
       const pk = e.target.closest('[data-pick]'); if (pk) { if (!st.sel.has(pk.dataset.pick)) toggleSel(pk.dataset.pick); else { st.last = pk.dataset.pick; renderInfo(); } return; }
+      if (e.target.closest('a')) return; // обычные ссылки (YouTube, источники)
       const go = e.target.closest('[data-go]'); if (go) { EXUI.focus(go.dataset.go); return; }
       const pb = e.target.closest('[data-post]');
       if (pb) { setView('side'); setPosture(pb.dataset.post); drawAnat(); $('#map').scrollIntoView({ behavior: 'smooth' }); toast('Поза: ' + POST[pb.dataset.post].t); return; }
@@ -318,6 +319,36 @@ const APP = (() => {
     return s;
   }
 
+  /* ---------- три зоны ---------- */
+  function zItem(id, kind) {
+    const ex = EX.BY[id]; if (!ex) return '';
+    const st0 = EXUI.still(ex, ex.frames.length > 2 ? 2 : 1);
+    const yt = ex.yt ? `<a class="zyt" href="https://www.youtube.com/results?search_query=${encodeURIComponent(ex.yt[0])}" target="_blank" rel="noopener" title="Поиск видео">▶ YouTube</a>` : '';
+    return `<div class="item" data-go="${id}"><svg viewBox="${(st0.vb || [-60, -100, 160, 100]).join(' ')}">${st0.svg}</svg><div><div class="t">${ex.title}</div><div class="d">${kind === 'r' ? ex.dose.main : ex.dose.main}</div>${yt}</div></div>`;
+  }
+  function renderZones() {
+    $('#zDaily').innerHTML = `<h3>⭐ Универсальный минимум на каждый день — для всех трёх зон</h3><p class="hint">Если делать только это — уже большая часть пользы. Микропауза и прогиб стоя — каждые 30–45 минут сидения; остальное — один раз в день (~15 минут) и прогулка.</p><div class="items">${DATA.DAILY.map(id => zItem(id, 'r')).join('')}</div>`;
+    $('#zList').innerHTML = DATA.ZONES.map((z, i) => `<article class="card zone-card" id="zone-${z.id}">
+      <div class="zhead"><span class="znum">${i + 1}</span><div><h3>${z.t}</h3><div class="hint">${z.lv}</div></div></div>
+      <button class="btn small" data-zone="${z.id}">Показать на карте</button>
+      <p>${z.why}</p>
+      <p><b>Мышцы и ткани этой зоны</b> <span class="hint">(нажмите — описание на карте)</span>:</p>
+      <div class="selbar">${z.muscles.map(m => `<button class="chip" data-mus="${m}">${DATA.MUSCLES[m].n}</button>`).join('')}</div>
+      <h4>🧊 Разгрузить</h4><div class="items">${z.relief.map(id => zItem(id, 'r')).join('')}</div>
+      <h4>💪 Укрепить</h4><div class="items">${z.strength.map(id => zItem(id, 's')).join('')}</div>
+    </article>`).join('');
+    $('#zones').addEventListener('click', e => {
+      if (e.target.closest('a')) return; // ссылка YouTube
+      const zb = e.target.closest('[data-zone]');
+      if (zb) {
+        const z = DATA.ZONES.find(x => x.id === zb.dataset.zone);
+        st.sel = new Set(z.sel); st.last = z.sel[z.sel.length - 1]; setView('side'); setPosture(z.post); afterSel();
+        $('#anat').scrollIntoView({ behavior: 'smooth', block: 'center' }); toast(`${z.t}: выбраны ${z.sel.slice(0, 2).join(' и ')}`); return;
+      }
+      const mb = e.target.closest('[data-mus]');
+      if (mb) { renderInfo(mb.dataset.mus); $('#info').scrollIntoView({ behavior: 'smooth', block: 'start' }); toast(DATA.MUSCLES[mb.dataset.mus].n); }
+    });
+  }
   function exCount() {
     const all = $$('#exList .ex'), vis = all.filter(e => e.style.display !== 'none');
     $('#exCount').textContent = `Показано упражнений: ${vis.length} из ${all.length}`;
@@ -339,6 +370,7 @@ const APP = (() => {
       exCount();
     });
     exCount();
+    renderZones();
     const tb = $('#themeBtn');
     const paint = () => { const d = document.documentElement.dataset.theme === 'dark'; tb.textContent = d ? '☀️' : '🌙'; tb.title = d ? 'Светлая тема' : 'Тёмная тема'; };
     tb.onclick = () => { const d = document.documentElement.dataset.theme === 'dark'; document.documentElement.dataset.theme = d ? 'light' : 'dark'; try { localStorage.setItem('spine-theme', d ? 'light' : 'dark'); } catch (e) { } paint(); toast(d ? 'Светлая тема' : 'Тёмная тема'); };
